@@ -1,7 +1,9 @@
 import os
 import sys
+import time
 import pandas as pd
 import numpy as np
+
 
 # dataset source
 FILE_SOURCE = sys.argv[1]
@@ -90,8 +92,9 @@ def generate_analysis_results():
     Returns:
         file: csv file
     """
+    timestr = time.strftime("%Y%m%d-%H%M%S")
     df_processed_data = build_data_pipeline()
-    df_processed_data.to_csv('results/processed_data.csv')
+    df_processed_data.to_csv('results/processed_data_' + timestr + '.csv')
     print("File for analysis results has been generated successfully!")
 
 
