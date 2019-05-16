@@ -36,7 +36,7 @@ pip install virtualenv
 ```
 virtulenv venv
 
-virtualenv venv/bin/activate
+source venv/bin/activate
 ```
 * Once activated, install the required Python libraries from the `requirements.txt`
 
