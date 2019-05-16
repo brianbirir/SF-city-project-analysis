@@ -25,8 +25,8 @@ def read_dataset():
     elif file_extension == '.csv':
         records = pd.read_csv(FILE_SOURCE)
     else:
-        print("Unsupported file format!")
-    return file_extension
+        records = "Unsupported file format!"
+    return records
 
 
 def get_description_column():
