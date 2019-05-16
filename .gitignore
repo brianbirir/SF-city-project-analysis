@@ -17,3 +17,9 @@ __pycache__/
 
 # IDEs
 .idea
+
+# data sets
+*.json
+*.csv
+*.xlsx
+*.xlx
