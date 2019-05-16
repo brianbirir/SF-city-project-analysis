@@ -1,18 +1,32 @@
+import os
+import sys
 import pandas as pd
 import numpy as np
 
-FILE_SOURCE = "src/City Council Planning Comm Notes.xlsx"
+# dataset source
+FILE_SOURCE = sys.argv[1]
+
+# keywords to search for in dataset
+LARGE_SCALE = 'large'
+RESIDENTIAL = 'residential'
 
 
-def dataset_reader():
+def read_dataset():
     """Loads the data set from a file source
 
     Returns:
         dataFrame: The pandas data structure of the file records
     """
-    # convert Excel file to data frame
-    records = pd.read_excel(FILE_SOURCE)
-    return records
+    # get file extension to determine method of reading file
+    # using pandas
+    file_name, file_extension = os.path.splitext(FILE_SOURCE)
+    if file_extension == '.xlsx':
+        records = pd.read_excel(FILE_SOURCE)
+    elif file_extension == '.csv':
+        records = pd.read_csv(FILE_SOURCE)
+    else:
+        print("Unsupported file format!")
+    return file_extension
 
 
 def get_description_column():
@@ -21,8 +35,12 @@ def get_description_column():
     Returns:
         dataFrame: The pandas data structure with the description column
     """
-    df = dataset_reader()
-    return df[['description']]
+    df = read_dataset()
+    # replace empty cells with NaN value
+    df[['description']].replace('', np.nan, inplace=True)
+    # drop non-values found in description table
+    df.dropna(subset=['description'], inplace=True)
+    return df[['OBJECTID', 'record_name', 'description']]
 
 
 def remove_punctuation(text):
@@ -45,7 +63,7 @@ def to_lowercase(text):
 
 
 def preprocess(data):
-    """Preprocess of text data before analysis
+    """Pre-process of text data before analysis
 
     Returns:
         string: Preprocessed text
@@ -55,17 +73,26 @@ def preprocess(data):
     return preprocessed_data
 
 
-def tokenizer():
-    """Convert preprocessed text into terms
+def build_data_pipeline():
+    """ Build data pipeline
 
     Returns:
-        dataFrame: Additional column with list of terms
+        dataFrame: Processed data
     """
-    df_preprocessed = get_description_column().apply(lambda x: preprocess(x))
-    # remove white spaces and split string into a list
-    df_preprocessed['terms'] = df_preprocessed['description'].str.strip().str.split()
+    df_preprocessed = get_description_column().astype(str).apply(lambda x: preprocess(x))
+    df_preprocessed['large_scale'] = df_preprocessed.astype(str).sum(axis=1).str.contains(LARGE_SCALE)
+    df_preprocessed['residential'] = df_preprocessed.astype(str).sum(axis=1).str.contains(RESIDENTIAL)
     return df_preprocessed
 
 
+def generate_analysis_results():
+    """ Generate analysis results
+    Returns:
+        dataFrame: Processed data
+    """
+    df_processed_data = build_data_pipeline()
+    df_processed_data.to_csv('results/processed_data.csv')
+
+
 if __name__ == "__main__":
-    pass
+    generate_analysis_results()
