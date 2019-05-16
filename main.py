@@ -1,6 +1,7 @@
 import pandas as pd
+import numpy as np
 
-FILE_SOURCE = 'src/City Council Planning Comm Notes.xlsx'
+FILE_SOURCE = "src/City Council Planning Comm Notes.xlsx"
 
 
 def dataset_reader():
@@ -17,9 +18,6 @@ def dataset_reader():
 def get_description_column():
     """Extracts the description column from the data source
 
-    Args:
-        file_source: An Excel file type
-
     Returns:
         dataFrame: The pandas data structure with the description column
     """
@@ -34,7 +32,7 @@ def remove_punctuation(text):
         dataFrame: Description column data without punctuation
     """
     symbols = "[^\w\s]"
-    return text.str.replace(symbols, '')
+    return text.str.replace(symbols, "")
 
 
 def to_lowercase(text):
@@ -55,3 +53,19 @@ def preprocess(data):
     data = remove_punctuation(data)
     preprocessed_data = to_lowercase(data)
     return preprocessed_data
+
+
+def tokenizer():
+    """Convert preprocessed text into terms
+
+    Returns:
+        dataFrame: Additional column with list of terms
+    """
+    df_preprocessed = get_description_column().apply(lambda x: preprocess(x))
+    # remove white spaces and split string into a list
+    df_preprocessed['terms'] = df_preprocessed['description'].str.strip().str.split()
+    return df_preprocessed
+
+
+if __name__ == "__main__":
+    pass
