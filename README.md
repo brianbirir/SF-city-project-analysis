@@ -14,9 +14,11 @@ The results obtained from the analysis will help the contractor determined proje
 ## Setup
 ### Pre-requisites
 The following are required before setting up the project:
+
 * Python 3.6+
 * Unix based operating system
-* Ensure the data set is of the following formats:
+
+Ensure the dataset is either of the following formats:
 
 * Comma Separated Values file - `csv`
 * Excel file - `xlsx`
