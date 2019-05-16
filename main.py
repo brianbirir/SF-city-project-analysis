@@ -92,6 +92,7 @@ def generate_analysis_results():
     """
     df_processed_data = build_data_pipeline()
     df_processed_data.to_csv('results/processed_data.csv')
+    print("File for analysis results has been generated successfully!")
 
 
 if __name__ == "__main__":
