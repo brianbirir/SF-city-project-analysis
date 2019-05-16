@@ -5,12 +5,14 @@ import pandas as pd
 import numpy as np
 
 
-# dataset source
+# data set source
 FILE_SOURCE = sys.argv[1]
 
 # keywords to search for in dataset
-LARGE_SCALE = 'large'
+LARGE_SCALE = 'large project'
 RESIDENTIAL = 'residential'
+
+RESULTS_FOLDER = 'results'
 
 
 def read_dataset():
@@ -94,7 +96,13 @@ def generate_analysis_results():
     """
     timestr = time.strftime("%Y%m%d-%H%M%S")
     df_processed_data = build_data_pipeline()
-    df_processed_data.to_csv('results/processed_data_' + timestr + '.csv')
+    # create target directory if does not exist
+    if os.path.exists(RESULTS_FOLDER):
+        print("Directory ", RESULTS_FOLDER, " already exists")
+    else:
+        os.mkdir(RESULTS_FOLDER)
+        print("Directory ", RESULTS_FOLDER, " has been created ")
+    df_processed_data.to_csv(RESULTS_FOLDER+'/processed_data_' + timestr + '.csv')
     print("File for analysis results has been generated successfully!")
 
 
