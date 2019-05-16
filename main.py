@@ -88,7 +88,7 @@ def build_data_pipeline():
 def generate_analysis_results():
     """ Generate analysis results
     Returns:
-        dataFrame: Processed data
+        file: csv file
     """
     df_processed_data = build_data_pipeline()
     df_processed_data.to_csv('results/processed_data.csv')
